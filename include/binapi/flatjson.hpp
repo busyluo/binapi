@@ -28,12 +28,10 @@
 
 #if defined(__clang__)
 #   define __FLATJSON__FALLTHROUGH [[clang::fallthrough]]
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) && __GNUC__ >= 7
 #   define __FLATJSON__FALLTHROUGH __attribute__ ((fallthrough))
-#elif defined(_MSC_VER)
-#   define __FLATJSON__FALLTHROUGH
 #else
-#   error "Unknown compiler"
+#   define __FLATJSON__FALLTHROUGH
 #endif //
 
 /*************************************************************************************************/
