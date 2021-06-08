@@ -16,7 +16,13 @@ include_directories(
     ./include
 )
 
-if (DEFINED ${BOOST_INCLUDE_DIR})
+message(BINAPI_BOOST_DIR=${BINAPI_BOOST_DIR})
+
+if (DEFINED BINAPI_BOOST_DIR)
+    include_directories(
+        ${BINAPI_BOOST_DIR}/include
+    )
+else()
     include_directories(
         ${BOOST_INCLUDE_DIR}
     )
@@ -54,7 +60,12 @@ add_library(
     ${BINAPI_SOURCES}
 )
 
-if (DEFINED ${BOOST_LIB_DIR})
+if (DEFINED BINAPI_BOOST_DIR)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        -L${BINAPI_BOOST_DIR}/lib
+    )
+else()
     target_link_libraries(
         ${PROJECT_NAME}
         -L${BOOST_LIB_DIR}
