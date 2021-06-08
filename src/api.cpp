@@ -443,7 +443,7 @@ struct api::impl {
             ,results.end()
             ,[this, req=std::move(req), ssl_socket=std::move(ssl_socket)]
              (const boost::system::error_code &ec, auto) mutable
-             { on_connect(ec, std::move(req), std::move(ssl_socket)); }
+             { this->on_connect(ec, std::move(req), std::move(ssl_socket)); }
         );
     }
     void on_connect(
