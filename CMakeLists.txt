@@ -3,7 +3,7 @@ project(binapi)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fsanitize=address")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wl,-fsanitize=address")
 
 add_definitions(
     -UNDEBUG
@@ -17,16 +17,6 @@ include_directories(
 )
 
 message(BINAPI_BOOST_DIR=${BINAPI_BOOST_DIR})
-
-if (DEFINED BINAPI_BOOST_DIR)
-    include_directories(
-        ${BINAPI_BOOST_DIR}/include
-    )
-else()
-    include_directories(
-        ${BOOST_INCLUDE_DIR}
-    )
-endif()
 
 set(BINAPI_HEADERS
     binapi/api.hpp
@@ -60,16 +50,11 @@ add_library(
     ${BINAPI_SOURCES}
 )
 
-if (DEFINED BINAPI_BOOST_DIR)
-    target_link_libraries(
-        ${PROJECT_NAME}
-        -L${BINAPI_BOOST_DIR}/lib
-    )
-else()
-    target_link_libraries(
-        ${PROJECT_NAME}
-        -L${BOOST_LIB_DIR}
-    )
+# Boost
+find_package(Boost 1.66 REQUIRED system filesystem thread locale)
+if(Boost_FOUND)
+    target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+    include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
 target_link_libraries(
